@@ -438,7 +438,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
     <!-- profile header -->
     <div style="display:flex;align-items:flex-start;gap:16px;margin-bottom:24px">
-      <div class="av" id="profile-av" style="width:72px;height:72px;font-size:22px;flex-shrink:0"></div>
+      <div style="position:relative;flex-shrink:0;cursor:pointer" onclick="document.getElementById('avatar-upload').click()">
+        <div class="av" id="profile-av" style="width:72px;height:72px;font-size:22px;overflow:hidden;flex-shrink:0"></div>
+        <div style="position:absolute;bottom:0;right:0;width:22px;height:22px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;border:2px solid var(--bg)">📷</div>
+        <input type="file" id="avatar-upload" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
+      </div>
       <div style="flex:1;min-width:0">
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <span id="profile-name" style="font-size:20px;font-weight:700;color:var(--text)"></span>
@@ -569,11 +573,10 @@ function enterApp(){
   document.getElementById('main-app').style.display = 'flex';
   const displayName = currentProfile?.name || currentProfile?.handle || currentUser?.email?.split('@')[0] || 'You';
   const handle = currentProfile?.handle || currentUser?.email?.split('@')[0] || 'user';
-  const initials = displayName.slice(0,2).toUpperCase();
-  document.getElementById('sidebar-av').textContent = initials;
-  document.getElementById('composer-av').textContent = initials;
   document.getElementById('sidebar-name').textContent = displayName;
   document.getElementById('sidebar-handle').textContent = '@' + handle;
+  setAvatar('sidebar-av', currentProfile?.avatar_url, displayName);
+  setAvatar('composer-av', currentProfile?.avatar_url, displayName);
   loadPosts();
   loadSuggestions();
 }
@@ -609,7 +612,7 @@ async function loadPosts(){
   const c = document.getElementById('posts-container');
   c.innerHTML = '<div class="loading"><div class="spinner"></div> Loading...</div>';
   const { data, error } = await sb.from('posts')
-    .select('*, profiles(handle, name)')
+    .select('*, profiles(handle, name, avatar_url)')
     .order('created_at', { ascending: false })
     .limit(50);
   if(error){ c.innerHTML = '<div class="empty-state">Error loading posts.</div>'; return; }
@@ -622,13 +625,16 @@ function renderPosts(posts){
   c.innerHTML = '';
   posts.forEach(p => {
     const initials = ((p.profiles?.name||p.profiles?.handle)||'?').slice(0,2).toUpperCase();
+    const avatarUrl = p.profiles?.avatar_url;
+    const avatarStyle = avatarUrl ? `background-image:url(${avatarUrl});background-size:cover;background-position:center;` : '';
+    const avatarContent = avatarUrl ? '' : initials;
     const timeAgo = getTimeAgo(p.created_at);
     const imgs = p.image_urls?.length ? `<div class="post-images c${Math.min(p.image_urls.length,4)}">${p.image_urls.slice(0,4).map(s=>`<img class="pimg" src="${s}" onclick="openLb('${s}',event)">`).join('')}</div>` : '';
     const isOwn = p.user_id === currentUser?.id;
     const el = document.createElement('div');
     el.className = 'post';
     el.innerHTML = `
-      <div class="av" style="width:40px;height:40px;font-size:13px">${initials}</div>
+      <div class="av" style="width:40px;height:40px;font-size:13px;${avatarStyle}">${avatarContent}</div>
       <div class="post-body">
         <div class="post-header">
           <span class="post-name">${esc(p.profiles?.name||p.profiles?.handle||'Unknown')}</span>
@@ -768,9 +774,41 @@ function getTimeAgo(ts){
   return Math.floor(s/86400)+'d';
 }
 function mobileNav(tab,el){ document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active')); el.classList.add('active'); if(tab==='home') showFeed(); else if(tab==='profile') showPage('profile'); }
-async function loadProfilePage(){ if(!currentProfile)return; const initials=(currentProfile.name||currentProfile.handle||'?').slice(0,2).toUpperCase(); document.getElementById('profile-av').textContent=initials; document.getElementById('profile-name').textContent=currentProfile.name||currentProfile.handle; document.getElementById('profile-handle').textContent='@'+(currentProfile.handle||''); document.getElementById('profile-bio').textContent=currentProfile.bio||''; document.getElementById('edit-name').value=currentProfile.name||''; document.getElementById('edit-bio').value=currentProfile.bio||''; const[{count:pc},{count:fing},{count:fers}]=await Promise.all([sb.from('posts').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id),sb.from('follows').select('*',{count:'exact',head:true}).eq('follower_id',currentUser.id),sb.from('follows').select('*',{count:'exact',head:true}).eq('following_id',currentUser.id)]); document.getElementById('profile-post-count').textContent=pc||0; document.getElementById('profile-following-count').textContent=fing||0; document.getElementById('profile-followers-count').textContent=fers||0; const{data:posts}=await sb.from('posts').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false}); const c=document.getElementById('profile-posts'); if(!posts||!posts.length){c.innerHTML='<div style="color:var(--text3);font-size:14px;padding:20px 0">No posts yet!</div>';return;} c.innerHTML=''; posts.forEach(p=>{const d=document.createElement('div');d.style.cssText='padding:14px 0;border-bottom:1px solid var(--border)';d.innerHTML=`<div style="font-size:15px;color:var(--text);line-height:1.6;margin-bottom:8px;white-space:pre-wrap;word-break:break-word">${esc(p.content)}</div><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:var(--text3)">${getTimeAgo(p.created_at)}</span><button onclick="deletePost(${p.id})" style="background:none;border:none;color:var(--like);font-size:12px;cursor:pointer;font-family:var(--font-body)">Delete</button></div>`;c.appendChild(d);}); }
+async function loadProfilePage(){ if(!currentProfile)return; const displayName=currentProfile.name||currentProfile.handle||'?'; setAvatar('profile-av', currentProfile.avatar_url, displayName); document.getElementById('profile-name').textContent=currentProfile.name||currentProfile.handle; document.getElementById('profile-handle').textContent='@'+(currentProfile.handle||''); document.getElementById('profile-bio').textContent=currentProfile.bio||''; document.getElementById('edit-name').value=currentProfile.name||''; document.getElementById('edit-bio').value=currentProfile.bio||''; const[{count:pc},{count:fing},{count:fers}]=await Promise.all([sb.from('posts').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id),sb.from('follows').select('*',{count:'exact',head:true}).eq('follower_id',currentUser.id),sb.from('follows').select('*',{count:'exact',head:true}).eq('following_id',currentUser.id)]); document.getElementById('profile-post-count').textContent=pc||0; document.getElementById('profile-following-count').textContent=fing||0; document.getElementById('profile-followers-count').textContent=fers||0; const{data:posts}=await sb.from('posts').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false}); const c=document.getElementById('profile-posts'); if(!posts||!posts.length){c.innerHTML='<div style="color:var(--text3);font-size:14px;padding:20px 0">No posts yet!</div>';return;} c.innerHTML=''; posts.forEach(p=>{const d=document.createElement('div');d.style.cssText='padding:14px 0;border-bottom:1px solid var(--border)';d.innerHTML=`<div style="font-size:15px;color:var(--text);line-height:1.6;margin-bottom:8px;white-space:pre-wrap;word-break:break-word">${esc(p.content)}</div><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:var(--text3)">${getTimeAgo(p.created_at)}</span><button onclick="deletePost(${p.id})" style="background:none;border:none;color:var(--like);font-size:12px;cursor:pointer;font-family:var(--font-body)">Delete</button></div>`;c.appendChild(d);}); }
 function toggleEditProfile(){ const f=document.getElementById('edit-profile-form'); f.style.display=f.style.display==='block'?'none':'block'; document.getElementById('edit-profile-msg').textContent=''; }
-async function saveProfile(){ const name=document.getElementById('edit-name').value.trim(); const bio=document.getElementById('edit-bio').value.trim(); const msg=document.getElementById('edit-profile-msg'); const{error}=await sb.from('profiles').update({name,bio}).eq('id',currentUser.id); if(error){msg.style.color='var(--like)';msg.textContent='Error saving.';return;} currentProfile={...currentProfile,name,bio}; const initials=(name||currentProfile.handle).slice(0,2).toUpperCase(); document.getElementById('profile-av').textContent=initials; document.getElementById('profile-name').textContent=name||currentProfile.handle; document.getElementById('profile-bio').textContent=bio; document.getElementById('sidebar-av').textContent=initials; document.getElementById('sidebar-name').textContent=name||currentProfile.handle; document.getElementById('composer-av').textContent=initials; msg.style.color='var(--green)';msg.textContent='✓ Saved!'; setTimeout(()=>toggleEditProfile(),1200); }
+
+async function uploadAvatar(input){
+  const file = input.files[0];
+  if(!file) return;
+  const av = document.getElementById('profile-av');
+  av.textContent = '...';
+  const ext = file.name.split('.').pop();
+  const path = `${currentUser.id}.${ext}`;
+  const { error: upErr } = await sb.storage.from('avatars').upload(path, file, { upsert: true });
+  if(upErr){ av.textContent = (currentProfile?.name||currentProfile?.handle||'?').slice(0,2).toUpperCase(); alert('Upload failed: ' + upErr.message); return; }
+  const { data } = sb.storage.from('avatars').getPublicUrl(path);
+  const avatarUrl = data.publicUrl + '?t=' + Date.now();
+  await sb.from('profiles').update({ avatar_url: avatarUrl }).eq('id', currentUser.id);
+  currentProfile = { ...currentProfile, avatar_url: avatarUrl };
+  setAvatar('profile-av', avatarUrl, currentProfile?.name||currentProfile?.handle);
+  setAvatar('sidebar-av', avatarUrl, currentProfile?.name||currentProfile?.handle);
+  setAvatar('composer-av', avatarUrl, currentProfile?.name||currentProfile?.handle);
+}
+
+function setAvatar(elId, url, name){
+  const el = document.getElementById(elId);
+  if(!el) return;
+  if(url){
+    el.style.backgroundImage = `url(${url})`;
+    el.style.backgroundSize = 'cover';
+    el.style.backgroundPosition = 'center';
+    el.textContent = '';
+  } else {
+    el.style.backgroundImage = '';
+    el.textContent = (name||'?').slice(0,2).toUpperCase();
+  }
+}
+async function saveProfile(){ const name=document.getElementById('edit-name').value.trim(); const bio=document.getElementById('edit-bio').value.trim(); const msg=document.getElementById('edit-profile-msg'); const{error}=await sb.from('profiles').update({name,bio}).eq('id',currentUser.id); if(error){msg.style.color='var(--like)';msg.textContent='Error saving.';return;} currentProfile={...currentProfile,name,bio}; document.getElementById('profile-name').textContent=name||currentProfile.handle; document.getElementById('profile-bio').textContent=bio; document.getElementById('sidebar-name').textContent=name||currentProfile.handle; setAvatar('profile-av',currentProfile.avatar_url,name||currentProfile.handle); setAvatar('sidebar-av',currentProfile.avatar_url,name||currentProfile.handle); setAvatar('composer-av',currentProfile.avatar_url,name||currentProfile.handle); msg.style.color='var(--green)';msg.textContent='✓ Saved!'; setTimeout(()=>toggleEditProfile(),1200); }
 
 function toggleTheme(){
   const h=document.documentElement,dark=h.getAttribute('data-theme')==='dark';
