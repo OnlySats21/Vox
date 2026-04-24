@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vox — Speak Outside The</title>
+
+<!-- SEO -->
+<meta name="description" content="Vox is the social platform built for people, not advertisers. Chronological feed. No ads. No algorithm. No billionaire's mood changing the rules overnight. Just your voice.">
+<meta name="keywords" content="Vox, social media, no ads, chronological feed, Twitter alternative, free platform, open social network">
+<meta name="author" content="Vox">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vox.social">
+<meta property="og:title" content="Vox — Speak Outside The">
+<meta property="og:description" content="They took the town square. We're taking it back. No ads. No algorithm. No noise. Chronological feed. Edit your posts. Free forever. Join the waitlist.">
+<meta property="og:image" content="https://pmurecegjuuhxmmzrgpj.supabase.co/storage/v1/object/public/assets/vox-og.png">
+<meta property="og:site_name" content="Vox">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@aastack">
+<meta name="twitter:creator" content="@aastack">
+<meta name="twitter:title" content="Vox — Speak Outside The">
+<meta name="twitter:description" content="They took the town square. We're taking it back. No ads. No algorithm. No noise. Chronological feed. Edit your posts. Free forever.">
+<meta name="twitter:image" content="https://pmurecegjuuhxmmzrgpj.supabase.co/storage/v1/object/public/assets/vox-og.png">
+
+<!-- Canonical -->
+<link rel="canonical" href="https://vox.social">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='5' y='15' width='70' height='50' rx='8' fill='none' stroke='%234f8ef7' stroke-width='4' stroke-dasharray='8,5'/><text y='58' x='10' font-family='Georgia' font-size='52' font-weight='700' font-style='italic' fill='%23f0f0f2'>V</text><line x1='67' y1='10' x2='85' y2='2' stroke='%23f7934f' stroke-width='4' stroke-linecap='round'/><line x1='76' y1='15' x2='85' y2='2' stroke='%23f7934f' stroke-width='4' stroke-linecap='round'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --accent:#4f8ef7;
+  --accent2:#f7934f;
+  --font-display:'DM Serif Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#0d0d0f;
+  --bg2:#141417;
+  --bg3:#1c1c21;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.14);
+  --text:#f0f0f2;
+  --text2:#9898a8;
+  --text3:#4a4a5e;
+  --logo-box:rgba(255,255,255,0.2);
+  --card-bg:#141417;
+}
+[data-theme="light"]{
+  --bg:#f7f7f5;
+  --bg2:#ffffff;
+  --bg3:#efeff4;
+  --border:rgba(0,0,0,0.07);
+  --border2:rgba(0,0,0,0.14);
+  --text:#0f0f14;
+  --text2:#5f5f72;
+  --text3:#b0b0c4;
+  --logo-box:rgba(0,0,0,0.2);
+  --card-bg:#ffffff;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.6}
+
+/* THEME TOGGLE */
+.theme-toggle{position:fixed;top:20px;right:24px;background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s;z-index:100;font-family:var(--font-body)}
+.theme-toggle:hover{color:var(--text);border-color:var(--accent)}
+.toggle-track{width:26px;height:15px;border-radius:8px;background:var(--bg3);border:1px solid var(--border2);position:relative;transition:background 0.2s;flex-shrink:0}
+[data-theme="dark"] .toggle-track{background:var(--accent)}
+.toggle-thumb{width:10px;height:10px;border-radius:50%;background:#fff;position:absolute;top:1.5px;left:2px;transition:transform 0.2s}
+[data-theme="dark"] .toggle-thumb{transform:translateX(11px)}
+
+/* LAYOUT */
+.page{max-width:900px;margin:0 auto;padding:0 24px}
+
+/* HERO */
+.hero{padding:100px 0 70px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:28px}
+.logo-wrap{display:flex;justify-content:center;margin-bottom:8px}
+
+.hero-headline{font-family:var(--font-display);font-size:clamp(48px,7vw,82px);font-weight:400;font-style:italic;color:var(--text);line-height:1.05;letter-spacing:-2px;max-width:720px}
+.hero-headline span{color:var(--accent)}
+.hero-sub{font-size:18px;color:var(--text2);max-width:480px;line-height:1.7;font-weight:300}
+
+/* FORM */
+/* AUTH CARD */
+.auth-card{width:100%;max-width:420px;background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px}
+.auth-tabs{display:flex;border:1px solid var(--border2);border-radius:40px;overflow:hidden}
+.auth-tab{flex:1;text-align:center;padding:9px;font-size:14px;cursor:pointer;color:var(--text2);background:transparent;border:none;font-family:var(--font-body);transition:all 0.15s}
+.auth-tab.active{background:var(--accent);color:#fff;font-weight:500}
+.auth-fields{display:flex;flex-direction:column;gap:10px}
+.auth-input{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;font-size:15px;color:var(--text);outline:none;font-family:var(--font-body);transition:border-color 0.15s;width:100%}
+.auth-input:focus{border-color:var(--accent)}
+.auth-input::placeholder{color:var(--text3)}
+.auth-err{font-size:13px;color:#e8396b;text-align:center;min-height:16px;margin:0}
+.form-note{font-size:12px;color:var(--text3);text-align:center}
+
+/* COUNTER */
+.counter-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2)}
+.counter-avatars{display:flex}
+.mini-av{width:28px;height:28px;border-radius:50%;border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;margin-left:-8px}
+.mini-av:first-child{margin-left:0}
+.av-a{background:#1a2e1a;color:#6dbf6d}
+.av-b{background:#2a1c38;color:#c07ad8}
+.av-c{background:#2e1a1c;color:#d87a80}
+.av-d{background:#1a252e;color:#7ab8d8}
+.counter-text{margin-left:4px}
+.counter-text strong{color:var(--text)}
+
+/* DIVIDER */
+.section-divider{border:none;border-top:1px solid var(--border);margin:0}
+
+/* WHY SECTION */
+.why{padding:72px 0}
+.why-label{font-size:11px;font-weight:600;letter-spacing:0.1em;color:var(--text3);text-transform:uppercase;text-align:center;margin-bottom:16px}
+.why-title{font-family:var(--font-display);font-size:clamp(32px,4vw,48px);font-weight:400;font-style:italic;color:var(--text);text-align:center;margin-bottom:56px;letter-spacing:-1px}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:640px){
+  .features{grid-template-columns:1fr}
+  .vs-grid{grid-template-columns:1fr}
+  .hero{padding:70px 0 50px;gap:20px}
+  .hero-headline{font-size:36px;letter-spacing:-1px}
+  .hero-sub{font-size:16px}
+  .auth-card{border-radius:16px;padding:20px}
+  .manifesto{padding:48px 0}
+  .manifesto-body p{font-size:15px}
+  .why{padding:48px 0}
+  .why-title{font-size:28px}
+  .vs{padding:48px 0}
+  .vs-title{font-size:28px}
+  .preview{padding:48px 0}
+  .mock{padding:16px}
+  .bottom-cta{padding:56px 0 72px}
+  .bottom-title{font-size:32px}
+  .bottom-cta > div{flex-direction:column;align-items:flex-start;gap:20px}
+  .theme-toggle{top:12px;right:12px;padding:5px 10px;font-size:11px}
+}
+.feature-card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:28px 24px;transition:border-color 0.15s}
+.feature-card:hover{border-color:var(--border2)}
+.feat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:18px}
+.feat-icon-blue{background:rgba(79,142,247,0.12)}
+.feat-icon-orange{background:rgba(247,147,79,0.12)}
+.feat-icon-green{background:rgba(41,194,122,0.12)}
+.feat-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:8px}
+.feat-desc{font-size:14px;color:var(--text2);line-height:1.7}
+
+/* MANIFESTO */
+.manifesto{padding:72px 0;max-width:640px;margin:0 auto;text-align:center}
+.manifesto-body{text-align:left;display:flex;flex-direction:column;gap:18px;margin-top:0}
+.manifesto-body p{font-size:17px;color:var(--text2);line-height:1.85}
+.manifesto-body p em{font-style:italic;color:var(--text);font-family:var(--font-display);font-size:19px}
+.manifesto-body p strong{color:var(--text);font-weight:600}
+.manifesto-body p:last-child{color:var(--text);font-weight:500;font-size:16px;border-left:3px solid var(--accent2);padding-left:16px;border-radius:0}
+.vs{padding:72px 0}
+.vs-title{font-family:var(--font-display);font-size:clamp(32px,4vw,48px);font-weight:400;font-style:italic;color:var(--text);text-align:center;margin-bottom:48px;letter-spacing:-1px}
+.vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:640px;margin:0 auto}
+@media(max-width:560px){.vs-grid{grid-template-columns:1fr}}
+.vs-card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:24px}
+.vs-card.them{opacity:0.6}
+.vs-card-label{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;color:var(--text3)}
+.vs-card.us .vs-card-label{color:var(--accent)}
+.vs-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--text2)}
+.vs-item:last-child{border-bottom:none}
+.vs-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700}
+.dot-yes{background:rgba(41,194,122,0.15);color:#29c27a}
+.dot-no{background:rgba(232,57,107,0.12);color:#e8396b}
+
+/* MOCKUP PREVIEW */
+.preview{padding:72px 0;text-align:center}
+.preview-label{font-size:11px;font-weight:600;letter-spacing:0.1em;color:var(--text3);text-transform:uppercase;margin-bottom:16px}
+.preview-title{font-family:var(--font-display);font-size:clamp(28px,3.5vw,42px);font-weight:400;font-style:italic;color:var(--text);margin-bottom:40px;letter-spacing:-0.5px}
+.mock{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:20px;max-width:500px;margin:0 auto;text-align:left}
+.mock-bar{display:flex;gap:6px;margin-bottom:16px}
+.mock-dot{width:10px;height:10px;border-radius:50%}
+.mock-post{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)}
+.mock-post:last-child{border-bottom:none}
+.mock-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.mock-body{flex:1}
+.mock-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.mock-text{font-size:13px;color:var(--text2);line-height:1.5}
+.mock-actions{display:flex;gap:14px;margin-top:8px}
+.mock-act{font-size:11px;color:var(--text3)}
+
+/* BOTTOM CTA */
+.bottom-cta{padding:80px 0 100px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:24px}
+.bottom-title{font-family:var(--font-display);font-size:clamp(36px,5vw,60px);font-weight:400;font-style:italic;color:var(--text);letter-spacing:-1.5px}
+.bottom-title span{color:var(--accent2)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:12px;color:var(--text3)}
+footer a{color:var(--text3);text-decoration:none}
+footer a:hover{color:var(--accent)}
+
+/* ANIMATIONS */
+@keyframes fade-up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fade-up 0.6s ease forwards}
+.fade-up-2{animation:fade-up 0.6s ease 0.1s forwards;opacity:0}
+.fade-up-3{animation:fade-up 0.6s ease 0.2s forwards;opacity:0}
+.fade-up-4{animation:fade-up 0.6s ease 0.3s forwards;opacity:0}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>.cta-btn{background:var(--accent);color:#fff;border:none;border-radius:40px;padding:13px 28px;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);white-space:nowrap;flex-shrink:0}.cta-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}.cta-btn:active{transform:translateY(0)}</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()">
+  <div class="toggle-track"><div class="toggle-thumb"></div></div>
+  <span id="theme-label">Dark</span>
+</button>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="logo-wrap fade-up">
+      <svg width="220" height="100" viewBox="0 0 220 100" overflow="visible">
+        <defs>
+          <style>
+            #wl-box{stroke-dasharray:300;stroke-dashoffset:300;animation:wl-draw 0.8s cubic-bezier(.4,0,.2,1) 0.3s forwards,wl-pulse 3s ease-in-out 2.5s infinite}
+            @keyframes wl-draw{to{stroke-dashoffset:0}}
+            @keyframes wl-pulse{0%,100%{stroke-opacity:0.2}50%{stroke-opacity:0.5}}
+            #wl-vox{opacity:0;transform:translate(-14px,7px);animation:wl-burst 0.55s cubic-bezier(.34,1.56,.64,1) 0.9s forwards}
+            @keyframes wl-burst{to{opacity:1;transform:translate(0,0)}}
+            #wl-t1{stroke-dasharray:28;stroke-dashoffset:28;animation:wl-tick 0.3s ease 1.35s forwards}
+            #wl-t2{stroke-dasharray:22;stroke-dashoffset:22;animation:wl-tick 0.3s ease 1.5s forwards}
+            @keyframes wl-tick{to{stroke-dashoffset:0}}
+            #wl-tag{opacity:0;animation:wl-fade 0.5s ease 1.6s forwards}
+            @keyframes wl-fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+          </style>
+        </defs>
+        <rect id="wl-box" x="2" y="8" width="155" height="64" rx="10"
+          fill="none" stroke="var(--logo-box)" stroke-width="2" stroke-dasharray="7,5"/>
+        <text id="wl-vox" x="10" y="64"
+          font-family="'DM Serif Display',Georgia,serif"
+          font-size="54" font-weight="700" font-style="italic"
+          fill="var(--text)" letter-spacing="-2">Vox</text>
+        <line id="wl-t1" x1="140" y1="3" x2="166" y2="-9"
+          stroke="#f7934f" stroke-width="3" stroke-linecap="round"/>
+        <line id="wl-t2" x1="155" y1="8" x2="166" y2="-9"
+          stroke="#f7934f" stroke-width="3" stroke-linecap="round"/>
+        <text id="wl-tag" x="80" y="90"
+          text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif"
+          font-size="10" font-weight="500"
+          fill="var(--text3)" letter-spacing="3">SPEAK OUTSIDE THE</text>
+      </svg>
+    </div>
+
+    <h1 class="hero-headline fade-up-2">The social platform that <span>actually</span> listens.</h1>
+    <p class="hero-sub fade-up-3">No algorithm. No ads. No noise. Just your voice — in the order you sent it. Create your handle and start Voxing free.</p>
+
+    <div class="auth-card fade-up-4">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-signup" onclick="switchTab('signup')">Sign up free</button>
+        <button class="auth-tab" id="tab-login" onclick="switchTab('login')">Log in</button>
+      </div>
+      <div class="auth-fields" id="auth-fields">
+        <input class="auth-input" id="auth-email" type="email" placeholder="Email address">
+        <input class="auth-input" id="auth-handle" type="text" placeholder="Choose your handle (e.g. aastack)" maxlength="24">
+        <input class="auth-input" id="auth-name" type="text" placeholder="Display name">
+        <input class="auth-input" id="auth-password" type="password" placeholder="Password (min 6 chars)">
+        <p class="auth-err" id="auth-err"></p>
+        <button class="cta-btn" id="auth-btn" onclick="handleAuth()" style="width:100%;border-radius:12px">Create account</button>
+        <p class="form-note">Free forever · No credit card · No ads</p>
+      </div>
+    </div>
+
+    <div class="counter-row fade-up-4">
+      <div class="counter-avatars">
+        <div class="mini-av av-a">SN</div>
+        <div class="mini-av av-b">KS</div>
+        <div class="mini-av av-c">PG</div>
+        <div class="mini-av av-d">LT</div>
+      </div>
+      <span class="counter-text"><strong>1,284</strong> people already on Vox</span>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- WHY VOX -->
+  <section class="why">
+    <p class="why-label">Why Vox</p>
+    <h2 class="why-title">Built for people, not advertisers.</h2>
+    <div class="features">
+      <div class="feature-card">
+        <div class="feat-icon feat-icon-blue">⏱</div>
+        <div class="feat-title">Chronological feed</div>
+        <div class="feat-desc">See posts in the order they were sent. No algorithm deciding what you think is important.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon feat-icon-orange">🚫</div>
+        <div class="feat-title">Zero ads. Forever.</div>
+        <div class="feat-desc">We're funded by users, not advertisers. Your feed is yours — no promoted posts, ever.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon feat-icon-green">✏️</div>
+        <div class="feat-title">Edit anything</div>
+        <div class="feat-desc">Made a typo? Fix it. Your voice, your words — you stay in control of what you've said.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon feat-icon-blue">📝</div>
+        <div class="feat-title">Long-form native</div>
+        <div class="feat-desc">500 characters, images, threads. Say what you actually mean without cramming it into a character limit.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon feat-icon-green">🔒</div>
+        <div class="feat-title">Privacy first</div>
+        <div class="feat-desc">We collect the minimum. We don't sell your data. No tracking pixels, no ad profiles, no surveillance.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon feat-icon-orange">🌐</div>
+        <div class="feat-title">Open communities</div>
+        <div class="feat-desc">Find your people. Topic-based communities with no paywall, no verification tax, no arbitrary suppression.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- INTRO / MANIFESTO -->
+  <section class="manifesto">
+    <p class="why-label">Why Vox exists</p>
+    <h2 class="why-title">They took the town square.<br>We're taking it back.</h2>
+    <div class="manifesto-body">
+      <p>Social media was supposed to be ours. A place where real people spoke freely, found their people, and actually heard each other. Instead it became a machine — engineered to keep you angry, addicted, and profitable. Your feed isn't yours. It belongs to whoever paid the most to put it there.</p>
+      <p><em>Vox</em> is Latin for <strong>voice</strong>. And that's exactly what got stolen. Not by accident — by design. Algorithms buried what mattered. Ads drowned out what was real. The people who built these platforms stopped asking "what do users want?" and started asking "what keeps them scrolling?"</p>
+      <p>We're done with that. Vox is built by people who were fed up — for people who are fed up. No ads. No algorithm deciding your reality. No billionaire's mood changing the rules overnight. Just your voice, the people you choose to follow, and a feed that respects your time. This is our platform. Let's build it together.</p>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- VS SECTION -->
+  <section class="vs">
+    <h2 class="vs-title">Them vs. Vox.</h2>
+    <div class="vs-grid">
+      <div class="vs-card them">
+        <div class="vs-card-label">The old way</div>
+        <div class="vs-item"><div class="vs-dot dot-no">✕</div>Algorithmic feed</div>
+        <div class="vs-item"><div class="vs-dot dot-no">✕</div>Ads everywhere</div>
+        <div class="vs-item"><div class="vs-dot dot-no">✕</div>Data sold to advertisers</div>
+        <div class="vs-item"><div class="vs-dot dot-no">✕</div>Verification paywalls</div>
+        <div class="vs-item"><div class="vs-dot dot-no">✕</div>No post editing</div>
+        <div class="vs-item"><div class="vs-dot dot-no">✕</div>Arbitrary suppression</div>
+      </div>
+      <div class="vs-card us">
+        <div class="vs-card-label">Vox</div>
+        <div class="vs-item"><div class="vs-dot dot-yes">✓</div>Chronological always</div>
+        <div class="vs-item"><div class="vs-dot dot-yes">✓</div>Zero ads. Ever.</div>
+        <div class="vs-item"><div class="vs-dot dot-yes">✓</div>Your data stays yours</div>
+        <div class="vs-item"><div class="vs-dot dot-yes">✓</div>Free and open to all</div>
+        <div class="vs-item"><div class="vs-dot dot-yes">✓</div>Edit posts anytime</div>
+        <div class="vs-item"><div class="vs-dot dot-yes">✓</div>Transparent moderation</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- PREVIEW -->
+  <section class="preview">
+    <p class="preview-label">Early preview</p>
+    <h2 class="preview-title">This is what your feed looks like.</h2>
+    <div class="mock">
+      <div class="mock-bar">
+        <div class="mock-dot" style="background:#ff5f57"></div>
+        <div class="mock-dot" style="background:#febc2e"></div>
+        <div class="mock-dot" style="background:#28c840"></div>
+      </div>
+      <div class="mock-post">
+        <div class="mock-av av-a">SN</div>
+        <div class="mock-body">
+          <div class="mock-name">Satoshi N. <span style="color:#4f8ef7;font-size:11px">✓</span> <span style="font-size:11px;color:#4a4a5e">· 2m</span></div>
+          <div class="mock-text">The beauty of cryptographic proof: trustless systems don't require trusting any single person. 🔐</div>
+          <div class="mock-actions"><span class="mock-act">💬 38</span><span class="mock-act">🔁 241</span><span class="mock-act">♥ 812</span></div>
+        </div>
+      </div>
+      <div class="mock-post">
+        <div class="mock-av av-b">KS</div>
+        <div class="mock-body">
+          <div class="mock-name">Kara S. <span style="color:#4f8ef7;font-size:11px">✓</span> <span style="font-size:11px;color:#4a4a5e">· 11m</span></div>
+          <div class="mock-text">Hot take: the best thing for social media is a dozen healthy competing platforms. Monocultures are fragile.</div>
+          <div class="mock-actions"><span class="mock-act">💬 204</span><span class="mock-act">🔁 891</span><span class="mock-act">♥ 3.4K</span></div>
+        </div>
+      </div>
+      <div class="mock-post">
+        <div class="mock-av av-c">PG</div>
+        <div class="mock-body">
+          <div class="mock-name">Paul G. <span style="font-size:11px;color:#4a4a5e">· 34m</span></div>
+          <div class="mock-text">Most "controversial" ideas aren't actually controversial among people who've thought carefully about them.</div>
+          <div class="mock-actions"><span class="mock-act">💬 419</span><span class="mock-act">🔁 1.2K</span><span class="mock-act">♥ 5.7K</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- BOTTOM CTA -->
+  <section class="bottom-cta">
+    <div style="display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 class="bottom-title" style="text-align:left">Your voice.<br><span>Speak outside the.</span></h2>
+        <button class="cta-btn" onclick="window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>document.getElementById('auth-email').focus(),400)">Create free account</button>
+        <p style="font-size:12px;color:var(--text3)">Free forever · No credit card · No ads</p>
+      </div>
+      <svg width="220" height="100" viewBox="0 0 220 100" overflow="visible">
+        <rect x="2" y="8" width="155" height="64" rx="10" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2" stroke-dasharray="7,5"/>
+        <text x="10" y="64" font-family="'DM Serif Display',Georgia,serif" font-size="54" font-weight="700" font-style="italic" fill="#f0f0f2" letter-spacing="-2">Vox</text>
+        <line x1="140" y1="3" x2="166" y2="-9" stroke="#f7934f" stroke-width="3" stroke-linecap="round"/>
+        <line x1="155" y1="8" x2="166" y2="-9" stroke="#f7934f" stroke-width="3" stroke-linecap="round"/>
+        <text x="80" y="90" text-anchor="middle" font-family="'DM Sans',system-ui,sans-serif" font-size="10" font-weight="500" fill="rgba(255,255,255,0.28)" letter-spacing="3">SPEAK OUTSIDE THE</text>
+      </svg>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <span>© 2025 Vox &nbsp;·&nbsp; <a href="#">Terms</a> &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; No ads &nbsp;·&nbsp; No algorithm &nbsp;·&nbsp; No noise</span>
+</footer>
+
+<script>
+function toggleTheme(){
+  const h=document.documentElement,dark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('theme-label').textContent=dark?'Light':'Dark';
+}
+
+const SUPABASE_URL='https://pmurecegjuuhxmmzrgpj.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtdXJlY2VnanV1aHhtbXpyZ3BqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5OTI0NTUsImV4cCI6MjA5MjU2ODQ1NX0.GDOy_eKT-WSWLHrQ91GJX6wFcuo9-LA85aRddvx1NOo';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+let authMode='signup';
+
+function switchTab(mode){
+  authMode=mode;
+  document.getElementById('tab-signup').classList.toggle('active',mode==='signup');
+  document.getElementById('tab-login').classList.toggle('active',mode==='login');
+  document.getElementById('auth-handle').style.display=mode==='signup'?'':'none';
+  document.getElementById('auth-name').style.display=mode==='signup'?'':'none';
+  document.getElementById('auth-btn').textContent=mode==='signup'?'Create account':'Log in';
+  document.getElementById('auth-err').textContent='';
+}
+
+async function handleAuth(){
+  const email=document.getElementById('auth-email').value.trim();
+  const password=document.getElementById('auth-password').value;
+  const handle=document.getElementById('auth-handle').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'');
+  const name=document.getElementById('auth-name').value.trim();
+  const errEl=document.getElementById('auth-err');
+  const btn=document.getElementById('auth-btn');
+  errEl.textContent='';
+  if(!email||!password){errEl.textContent='Email and password required.';return;}
+  btn.textContent='...';btn.disabled=true;
+  if(authMode==='signup'){
+    if(!handle){errEl.textContent='Choose a handle.';btn.textContent='Create account';btn.disabled=false;return;}
+    const{data:existing}=await sb.from('profiles').select('id').eq('handle',handle).maybeSingle();
+    if(existing){errEl.textContent='Handle taken. Try another.';btn.textContent='Create account';btn.disabled=false;return;}
+    const{data,error}=await sb.auth.signUp({email,password});
+    if(error){errEl.textContent=error.message;btn.textContent='Create account';btn.disabled=false;return;}
+    await sb.from('profiles').insert({id:data.user.id,handle,name:name||handle});
+    errEl.style.color='#29c27a';
+    errEl.textContent='✓ Account created! Check your email to confirm, then log in.';
+    btn.textContent='Create account';btn.disabled=false;
+    switchTab('login');
+  } else {
+    const{data,error}=await sb.auth.signInWithPassword({email,password});
+    if(error){errEl.textContent=error.message;btn.textContent='Log in';btn.disabled=false;return;}
+    window.location.href='vox-app.html';
+  }
+}
+
+document.getElementById('auth-password').addEventListener('keydown',e=>{if(e.key==='Enter')handleAuth();});
+</script>
+</body>
+</html>
