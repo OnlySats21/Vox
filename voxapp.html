@@ -46,8 +46,8 @@
 }
 [data-theme="dark"]{--bg:#0d0d0f;--bg2:#141417;--bg3:#1c1c21;--bg4:#232329;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.14);--text:#f0f0f2;--text2:#9898a8;--text3:#4a4a5e;--logo-box:rgba(255,255,255,0.2)}
 [data-theme="light"]{--bg:#f7f7f5;--bg2:#ffffff;--bg3:#efeff4;--bg4:#e4e4ec;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.14);--text:#0f0f14;--text2:#5f5f72;--text3:#b0b0c4;--logo-box:rgba(0,0,0,0.2)}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.5;overflow:hidden}
-.app{display:flex;height:100vh;max-width:1260px;margin:0 auto}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.5;overflow:hidden;width:100%}
+.app{display:flex;height:100vh;max-width:1260px;margin:0 auto;width:100%}
 
 /* AUTH OVERLAY */
 .auth-overlay{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
@@ -201,39 +201,71 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 #file-input{display:none}
 
 /* ── BOTTOM NAV (mobile only) ── */
-.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--bg2);border-top:1px solid var(--border);z-index:100;align-items:center;justify-content:space-around;padding:0 8px}
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:58px;background:var(--bg2);border-top:1px solid var(--border);z-index:100;align-items:center;justify-content:space-around;padding:0 8px}
 .bnav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:6px 0;cursor:pointer;color:var(--text3);border:none;background:none;font-family:var(--font-body);gap:3px;transition:color 0.15s}
 .bnav-item.active{color:var(--accent)}
 .bnav-item svg{width:22px;height:22px;stroke-width:1.8}
 .bnav-label{font-size:9px;font-weight:500;letter-spacing:0.02em}
-.bnav-vox{background:var(--accent);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:var(--font-body)}
+.bnav-vox{background:var(--accent);border-radius:50%;width:46px;height:46px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:var(--font-body)}
+
+/* ── MOBILE TOP BAR (hidden on desktop) ── */
+.mobile-topbar{display:none}
 
 /* ── MOBILE OVERRIDES ── */
 @media(max-width:768px){
-  html,body{overflow:hidden}
-  .app{height:100dvh}
+  html,body{overflow:hidden;height:100%;width:100%}
+  .app{height:100dvh;width:100vw;overflow:hidden}
+
+  /* hide desktop panels */
   .sidebar{display:none}
   .rpanel{display:none}
-  .main{border-right:none}
-  .bottom-nav{display:flex}
-  .feed{padding-bottom:64px}
-  .auth-box{padding:28px 20px;border-radius:20px}
-  .pill-bar{display:none}
-  .post{padding:12px 14px}
-  .post-text{font-size:14px}
-  .composer{padding:12px 14px}
-  .compose-input{min-height:52px;font-size:14px}
-  .top-bar{position:sticky;top:0;z-index:10}
-  .tab{font-size:13px;padding:12px 4px}
-  .page{padding:24px 20px}
-  .page h1{font-size:24px}
+  .main{border-right:none;width:100%;flex:1}
 
-  /* mobile top bar with logo + theme toggle */
-  .mobile-topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 0;background:var(--bg)}
-  .mobile-theme-btn{background:none;border:1px solid var(--border2);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--text2);cursor:pointer;font-family:var(--font-body)}
+  /* show mobile nav */
+  .bottom-nav{display:flex}
+  .mobile-topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 6px;background:var(--bg);border-bottom:1px solid var(--border);width:100%}
+  .mobile-theme-btn{background:none;border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:var(--font-body)}
+
+  /* auth overlay */
+  .auth-overlay{padding:16px;align-items:flex-start;padding-top:40px}
+  .auth-box{padding:24px 20px;border-radius:20px;width:100%;max-width:100%;margin:0 auto}
+  .auth-title{font-size:22px}
+  .auth-logo svg{display:block;margin:0 auto}
+
+  /* feed */
+  .feed{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:70px;width:100%}
+  .top-bar{position:sticky;top:0;z-index:10;width:100%}
+  .tab{font-size:12px;padding:12px 4px}
+  .pill-bar{display:none}
+
+  /* composer */
+  .composer{padding:12px 14px;width:100%}
+  .compose-input{min-height:52px;font-size:15px;width:100%}
+  .compose-footer{flex-wrap:wrap;gap:8px}
+
+  /* posts */
+  .post{padding:12px 14px;width:100%}
+  .post-text{font-size:14px}
+  .post-name{font-size:13px}
+  .post-handle{font-size:12px}
+  .act{padding:4px 6px;font-size:12px}
+
+  /* pages */
+  .page{padding:20px 16px}
+  .page h1{font-size:22px}
+  .page h2{font-size:15px}
+  .page p,.page ul{font-size:14px}
+
+  /* images */
+  .post-images.c1 .pimg{height:220px}
+  .pimg{height:160px}
+
+  /* who to follow panel shown inline on mobile - hide for now */
+  .rpanel{display:none}
 }
 @media(min-width:769px){
   .mobile-topbar{display:none}
+  .bottom-nav{display:none}
 }
 </style>
 </head>
@@ -372,7 +404,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     </div>
   </div>
 
-  <div class="main" id="main-feed">
+  <div class="main" id="main-feed" style="display:flex;flex-direction:column;overflow:hidden">
     <div class="top-bar">
       <div class="tab active" onclick="switchTab(this)">Latest</div>
       <div class="tab" onclick="switchTab(this)">Following</div>
@@ -491,8 +523,10 @@ async function handleAuth(){
     const { data, error } = await sb.auth.signUp({ email, password });
     if(error){ errEl.textContent = error.message; btn.textContent='Create account'; btn.disabled=false; return; }
 
-    const { error: pe } = await sb.from('profiles').insert({ id: data.user.id, handle, name: name||handle });
-    if(pe){ errEl.textContent = pe.message; btn.textContent='Create account'; btn.disabled=false; return; }
+    if(data.user){
+      const { error: pe } = await sb.from('profiles').insert({ id: data.user.id, handle, name: name||handle });
+      if(pe){ errEl.textContent = pe.message; btn.textContent='Create account'; btn.disabled=false; return; }
+    }
 
     currentUser = data.user;
     await loadProfile(data.user.id);
@@ -514,11 +548,13 @@ async function loadProfile(uid){
 function enterApp(){
   document.getElementById('auth-overlay').style.display = 'none';
   document.getElementById('main-app').style.display = 'flex';
-  const initials = (currentProfile?.name||currentProfile?.handle||'?').slice(0,2).toUpperCase();
+  const displayName = currentProfile?.name || currentProfile?.handle || currentUser?.email?.split('@')[0] || 'You';
+  const handle = currentProfile?.handle || currentUser?.email?.split('@')[0] || 'user';
+  const initials = displayName.slice(0,2).toUpperCase();
   document.getElementById('sidebar-av').textContent = initials;
   document.getElementById('composer-av').textContent = initials;
-  document.getElementById('sidebar-name').textContent = currentProfile?.name || currentProfile?.handle;
-  document.getElementById('sidebar-handle').textContent = '@' + currentProfile?.handle;
+  document.getElementById('sidebar-name').textContent = displayName;
+  document.getElementById('sidebar-handle').textContent = '@' + handle;
   loadPosts();
   loadSuggestions();
 }
