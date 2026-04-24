@@ -207,61 +207,30 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .bnav-item svg{width:22px;height:22px;stroke-width:1.8}
 .bnav-label{font-size:9px;font-weight:500;letter-spacing:0.02em}
 .bnav-vox{background:var(--accent);border-radius:50%;width:46px;height:46px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:var(--font-body)}
-
-/* ── MOBILE TOP BAR (hidden on desktop) ── */
 .mobile-topbar{display:none}
+.mobile-theme-btn{background:none;border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:var(--font-body)}
 
-/* ── MOBILE OVERRIDES ── */
 @media(max-width:768px){
-  html,body{overflow:hidden;height:100%;width:100%}
-  .app{height:100dvh;width:100vw;overflow:hidden}
-
-  /* hide desktop panels */
+  html,body{height:100%;overflow:hidden;width:100%}
+  .app{height:100dvh;flex-direction:column;overflow:hidden}
   .sidebar{display:none}
   .rpanel{display:none}
-  .main{border-right:none;width:100%;flex:1}
-
-  /* show mobile nav */
-  .bottom-nav{display:flex}
-  .mobile-topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 6px;background:var(--bg);border-bottom:1px solid var(--border);width:100%}
-  .mobile-theme-btn{background:none;border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:var(--font-body)}
-
-  /* auth overlay */
-  .auth-overlay{padding:16px;align-items:flex-start;padding-top:40px}
-  .auth-box{padding:24px 20px;border-radius:20px;width:100%;max-width:100%;margin:0 auto}
-  .auth-title{font-size:22px}
-  .auth-logo svg{display:block;margin:0 auto}
-
-  /* feed */
+  .main{flex:1;display:flex;flex-direction:column;min-height:0;border-right:none;width:100%;overflow:hidden}
+  .top-bar{flex-shrink:0;width:100%}
   .feed{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:70px;width:100%}
-  .top-bar{position:sticky;top:0;z-index:10;width:100%}
-  .tab{font-size:12px;padding:12px 4px}
+  .bottom-nav{display:flex}
+  .mobile-topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 8px;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0;width:100%}
+  .auth-overlay{padding:20px;align-items:center}
+  .auth-box{padding:24px 20px;width:100%;max-width:420px;margin:0 auto}
   .pill-bar{display:none}
-
-  /* composer */
-  .composer{padding:12px 14px;width:100%}
-  .compose-input{min-height:52px;font-size:15px;width:100%}
-  .compose-footer{flex-wrap:wrap;gap:8px}
-
-  /* posts */
-  .post{padding:12px 14px;width:100%}
+  .post{padding:12px 14px}
   .post-text{font-size:14px}
-  .post-name{font-size:13px}
-  .post-handle{font-size:12px}
-  .act{padding:4px 6px;font-size:12px}
-
-  /* pages */
-  .page{padding:20px 16px}
+  .composer{padding:12px 14px}
+  .compose-input{min-height:52px;font-size:15px}
+  .tab{font-size:12px;padding:12px 4px}
+  .page{padding:20px 16px;padding-bottom:80px}
   .page h1{font-size:22px}
-  .page h2{font-size:15px}
-  .page p,.page ul{font-size:14px}
-
-  /* images */
-  .post-images.c1 .pimg{height:220px}
-  .pimg{height:160px}
-
-  /* who to follow panel shown inline on mobile - hide for now */
-  .rpanel{display:none}
+  .act{padding:4px 6px;font-size:12px}
 }
 @media(min-width:769px){
   .mobile-topbar{display:none}
@@ -323,13 +292,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
   <!-- MOBILE TOP BAR -->
   <div class="mobile-topbar" id="mobile-topbar">
+    <button class="mobile-theme-btn" onclick="toggleTheme()" id="mobile-theme-btn">☀️ Light</button>
     <svg width="80" height="36" viewBox="0 0 80 36" overflow="visible" style="cursor:pointer" onclick="showFeed()">
       <rect x="1" y="4" width="54" height="24" rx="5" fill="none" stroke="var(--logo-box)" stroke-width="1.4" stroke-dasharray="4,3"/>
       <text x="5" y="24" font-family="'DM Serif Display',Georgia,serif" font-size="19" font-weight="700" font-style="italic" fill="var(--text)" letter-spacing="-0.5">Vox</text>
       <line x1="49" y1="1" x2="60" y2="-4" stroke="#f7934f" stroke-width="1.8" stroke-linecap="round"/>
       <line x1="55" y1="4" x2="60" y2="-4" stroke="#f7934f" stroke-width="1.8" stroke-linecap="round"/>
     </svg>
-    <button class="mobile-theme-btn" onclick="toggleTheme()" id="mobile-theme-btn">☀️ Light</button>
+    <div style="width:70px"></div>
   </div>
 
   <!-- BOTTOM NAV -->
@@ -404,7 +374,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     </div>
   </div>
 
-  <div class="main" id="main-feed" style="display:flex;flex-direction:column;overflow:hidden">
+  <div class="main" id="main-feed">
     <div class="top-bar">
       <div class="tab active" onclick="switchTab(this)">Latest</div>
       <div class="tab" onclick="switchTab(this)">Following</div>
@@ -579,6 +549,7 @@ sb.auth.getSession().then(async ({ data }) => {
     currentUser = data.session.user;
     await loadProfile(currentUser.id);
     enterApp();
+    await loadPosts();
   }
 });
 
