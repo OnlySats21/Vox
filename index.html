@@ -473,7 +473,7 @@ async function handleAuth(){
   } else {
     const{data,error}=await sb.auth.signInWithPassword({email,password});
     if(error){errEl.textContent=error.message;btn.textContent='Log in';btn.disabled=false;return;}
-    window.location.href='https://vox-sigma-dusky.vercel.app/vox-app.html';
+    window.location.href='https://vox-sigma-dusky.vercel.app/voxapp.html';
   }
 }
 
